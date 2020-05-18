@@ -148,14 +148,14 @@ export default {
             this.showLoginForm = !this.showLoginForm;
             this.showLoginBtn = !this.showLoginBtn;
             this.showRegisterForm = !this.showRegisterForm;
-            this.showRegisterBtn = !this.showRegisterBtn;
+            this.showRegisterBtn = !this.showRegisterBtn; 
          }
       },
 
        login() {
             if (this.loginForm.username !== "" && this.loginForm.password !== "") {
                 var data = {
-                    "username":this.loginForm.username,
+                    "userName":this.loginForm.username,
                     "password":this.loginForm.password
                 };
                 this.$http.post('http://ec2-18-224-141-43.us-east-2.compute.amazonaws.com/services/api/auth/signin', data).then(response => {

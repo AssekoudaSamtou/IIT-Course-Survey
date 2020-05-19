@@ -103,6 +103,19 @@
               ></vc-donut>
             </v-card>
           </v-col>
+          <v-col>
+            <v-card class="pa-2" tile>
+              <vc-donut
+                background="white" foreground="grey"
+                :size="200" unit="px" :thickness="30"
+                has-legend legend-placement="top"
+                :sections="sections" :total="100"
+                :start-angle="0" :auto-adjust-text-size="true"
+                @section-click="handleSectionClick">
+                <h1>75%</h1>
+              </vc-donut>
+            </v-card>
+          </v-col>
         </v-row>
 
         <router-view name="dashcontent"></router-view>
@@ -215,8 +228,18 @@ export default {
           iron: "6%"
         }
       ],
-      sections: [{ value: 25 }, { value: 25 }]
+      sections: [
+        { label: 'Red section', value: 25, color: 'red' },
+        { label: 'Green section', value: 25, color: 'green' },
+        { label: 'Blue section', value: 25, color: 'blue' }
+      ]
+      
     };
+  },
+  methods: {
+    handleSectionClick(section, event) {
+      console.log(`${section.label} clicked.`);
+    }
   }
 };
 </script>

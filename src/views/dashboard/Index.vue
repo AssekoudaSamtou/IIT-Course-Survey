@@ -76,7 +76,7 @@
 
     <v-content>
       <v-container fluid>
-        <v-card>
+        <!-- <v-card>
           <v-card-title>Nutrition
             <v-spacer></v-spacer>
             <v-text-field
@@ -88,7 +88,23 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table :headers="headers" :items="desserts" :search="search"></v-data-table>
-        </v-card>
+        </v-card>-->
+        <v-row class="mb-6" no-gutters>
+          <v-col>
+            <v-card class="pa-2" tile>
+              <vc-donut :sections="sections">Basic donut</vc-donut>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card class="pa-2" tile>
+              <vc-donut
+                :sections="[{ value: 35 }, { value: 15 }, { value: 15 }, { value: 35 }]"
+                :thickness="100"
+              ></vc-donut>
+            </v-card>
+          </v-col>
+        </v-row>
+
         <router-view name="dashcontent"></router-view>
       </v-container>
     </v-content>
@@ -198,7 +214,8 @@ export default {
           protein: 7,
           iron: "6%"
         }
-      ]
+      ],
+      sections: [{ value: 25 }, { value: 25 }]
     };
   }
 };

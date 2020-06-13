@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "start": "node index.js",
     "postinstall": "vue-cli-service build",
     "heroku-postbuild": "vue-cli-service build"
   },
@@ -19,6 +20,7 @@
     "vue-resource": "^1.5.1",
     "vue-router": "^3.1.6",
     "vuetify": "^2.2.11",
+    "express": "^4.15.2",
     "vuex": "^3.1.3"
   },
   "devDependencies": {

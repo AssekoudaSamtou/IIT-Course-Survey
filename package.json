@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "vue-cli-service build",
+    "heroku-postbuild": "vue-cli-service build"
   },
   "dependencies": {
     "chart.js": "^2.9.3",
@@ -52,5 +54,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+
+  "engines": {
+    "node": "12.13.1",
+    "npm": "6.12.1"
+  }
 }

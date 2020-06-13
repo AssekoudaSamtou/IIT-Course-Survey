@@ -1,10 +1,10 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+var express = require('express')
+var path = require('path')
+var serveStatic = require('serve-static')
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+var app = express()
+app.use(serveStatic(path.join(__dirname, 'dist')))
+var port = process.env.PORT || 5000
+
+app.listen(port)
+console.log('server started on port ' + port)

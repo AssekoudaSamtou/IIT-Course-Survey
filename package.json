@@ -5,10 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "node index.js",
-    "postinstall": "vue-cli-service build",
-    "heroku-postbuild": "vue-cli-service build"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "chart.js": "^2.9.3",

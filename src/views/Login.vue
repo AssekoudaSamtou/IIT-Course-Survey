@@ -16,14 +16,14 @@
                      </v-toolbar>
                      <v-card-text>
 
-                        <v-form v-show="showLoginForm">
+                        <v-form v-show="showLoginForm" id="signinForm">
 <!--                           login form-->
                           <v-text-field
                               prepend-icon="mdi-account"
                               name="username"
                               v-model="loginForm.username"
                               label="Username"
-                              type="text"
+                              type="text" required="true"
                           />
                           <v-text-field
                               id="password"
@@ -31,53 +31,53 @@
                               name="password"
                               v-model="loginForm.password"
                               label="Password"
-                              type="password"
+                              type="password" required="true"
                           />
                         </v-form>
 
 <!--                        register form-->
-                        <v-form v-show="showRegisterForm">
+                        <v-form v-show="showRegisterForm" id="signupForm">
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="firstName"
                                 v-model="registerForm.firstName"
                                 label="Nom"
-                                type="text"
+                                type="text" required="true"
                             />
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="lastName"
                                 v-model="registerForm.lastName"
                                 label="Prénom"
-                                type="text"
+                                type="text" required="true"
                             />
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="username"
                                 v-model="registerForm.userName"
                                 label="Nom d'utilisateur"
-                                type="text"
+                                type="text" required="true"
                             />
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="phone"
                                 v-model="registerForm.phone"
                                 label="Téléphone"
-                                type="text"
+                                type="text" required="true"
                             />
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="email"
                                 v-model="registerForm.email"
                                 label="Email"
-                                type="email"
+                                type="email" required="true"
                             />
                             <v-text-field
                                 prepend-icon="mdi-lock"
                                 name="password"
                                 v-model="registerForm.password"
                                 label="Mot de passe"
-                                type="password"
+                                type="password" required="true"
                             />
                             <v-text-field
                                 id="r-password"
@@ -85,15 +85,15 @@
                                 name="password"
                                 v-model="registerForm.r_password"
                                 label="Repeter Mot de passe"
-                                type="password"
+                                type="password" required="true"
                             />
                         </v-form>
 
                      </v-card-text>
                      <v-card-actions>
                          <v-spacer/>
-                        <v-btn color="primary" v-show="showLoginBtn" @click.prevent="login">Se connecter</v-btn>
-                        <v-btn color="primary" v-show="showRegisterBtn" to="/">S'inscrire</v-btn>
+                        <v-btn color="primary" v-show="showLoginBtn" @click.prevent="login('', '')">Se connecter</v-btn>
+                        <v-btn color="primary" v-show="showRegisterBtn" @click.prevent="signup">S'inscrire</v-btn>
                      </v-card-actions>
                   </v-card>
                </v-flex>
@@ -152,31 +152,74 @@ export default {
          }
       },
 
-       login() {
-            if (this.loginForm.username !== "" && this.loginForm.password !== "") {
-                var data = {
+       login(username, password) {
+           var data;
+           if(username ==="" || password === "") {
+               data = {
                     "userName":this.loginForm.username,
                     "password":this.loginForm.password
                 };
+           }
+           else {
+               data = {
+                    "userName":username,
+                    "password":password
+                };
+           }
+            if (document.getElementById("signinForm").reportValidity() === true) {
                 this.$http.post('http://ec2-18-224-141-43.us-east-2.compute.amazonaws.com/services/api/auth/signin', data).then(response => {
-                console.log(response.status);
-
-                // get status text
-                console.log(response.statusText);
-
-                // get 'Expires' header
-                console.log(response.headers.get('Expires'));
-
-                // get body data
-                console.log(response.body);
-
-                // this.$store.dispatch('activateLink', { index });
                 this.$store.commit('setUserInfo', response.body);
                 this.$router.push({name: "Home"});
+
 
               }, response => {
                 console.log(response);
                 this.loginIsFailed = true;
+              });
+            }
+       },
+
+       signup() {
+           if (document.getElementById("signupForm").reportValidity() === true) {
+                var data = {
+                    "type" : "user",
+                    "id" : null,
+                    "createDateTime" : Math.floor(Date.now() / 1000),
+                    "modDateTime" : Math.floor(Date.now() / 1000),
+                    "modBy" : 1,
+                    "error" : null,
+                    "firstName" : this.registerForm.firstName,
+                    "lastName" : this.registerForm.lastName,
+                    "phone" : this.registerForm.phone,
+                    "email" : this.registerForm.email,
+                    "role" : ["user"],
+                    "userName":this.registerForm.userName,
+                    "password":this.registerForm.password
+                };
+                this.$http.post('http://ec2-18-224-141-43.us-east-2.compute.amazonaws.com/services/api/auth/signup', data).then(response => {
+
+                    let student = {
+                        type: "student",
+                        matricule: `STU-${response.body.id}`,
+                        id_user: response.body.id,
+                        modBy: this.$store.state.userInfo.id,
+                    };
+
+                    this.$http.post('http://ec2-18-224-141-43.us-east-2.compute.amazonaws.com/services/save/student', student).then(response => {
+
+                        console.log(response.body);
+
+                    },response => {
+                        console.log(response);
+                    });
+
+                    console.log(response.body);
+                    this.toggleForms("login");
+                    this.loginForm.username = response.body.userName;
+
+              }, response => {
+                console.log(response);
+                // this.loginIsFailed = true;
               });
             }
        }

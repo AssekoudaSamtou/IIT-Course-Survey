@@ -3,15 +3,37 @@
         <div data-app>
             <v-container fluid>
                 <v-row align="center">
-                    <v-col class="d-flex" cols="3" sm="3">
-                        <v-select :items="items" :label="label" dense outlined/>
+                    <v-col class="d-flex" cols="12" sm="12">
+                        <v-alert dense outlined type="error" width="100%">
+                            <strong>Liste des surveys en attente!</strong>
+                        </v-alert>
                     </v-col>
                 </v-row>
 
                 <v-row>
                     <v-col cols="12">
-                        <v-row align="center" justify="center" class="grey lighten-5" style="height: 300px;">
-                            <Survey v-for="survey in surveys" :key="survey[0]" :survey="survey" class="survey"/>
+                        <v-row align="center" justify="center" class="grey lighten-5">
+                            <Survey v-for="survey in surveys" :key="survey.id" :survey="survey" class="survey"/>
+                        </v-row>
+                    </v-col>
+                </v-row>
+            </v-container>
+
+
+
+            <v-container fluid>
+                <v-row align="center">
+                    <v-col class="d-flex" cols="12" sm="12">
+                        <v-alert dense outlined type="success" width="100%">
+                            <strong>Liste des surveys déja passés!</strong>
+                        </v-alert>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="12">
+                        <v-row align="center" justify="center" class="grey lighten-5">
+                            <Survey v-for="survey in passed_surveys" :key="survey.id" :survey="survey" class="survey"/>
                         </v-row>
                     </v-col>
                 </v-row>
@@ -30,67 +52,38 @@
                 items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
                 label: "Afficher",
                 surveys: [
-                    [
-                        1,
-                        1,
-                        "Evaluation du cours de Base de donnee",
-                        "il s'agit d'avoir un retour sur le bon fonctionnement des cours de Base de donnee",
-                        "Veuillez remplir ce formulaire ",
-                        "Merci pour votre patience",
-                        "2018-04-05T04:27:23.000+0000",
-                        "2020-07-06T20:55:13.000+0000",
-                        3,
-                        "2020-07-05T22:16:51.000+0000",
-                        "1970-12-31T23:01:31.000+0000",
-                        0,
-                        1
-                    ],
-                    [
-                        2,
-                        1,
-                        "Evaluation du cours de POO",
-                        "il s'agit d'avoir un retour sur le bon fonctionnement des cours de POO",
-                        "Veuillez remplir ce formulaire ",
-                        "Merci pour votre patience",
-                        "2004-09-13T03:00:15.000+0000",
-                        "2020-03-16T10:55:49.000+0000",
-                        2,
-                        "1970-12-31T23:01:29.000+0000",
-                        "1970-12-31T23:01:49.000+0000",
-                        1,
-                        1
-                    ],
-                    [
-                        3,
-                        4,
-                        "Evaluation du Professeur de Base de donnee",
-                        "il s'agit d'avoir un retour sur le professeur charge du cours de base de donnéé",
-                        "Veuillez remplir ce formulaire ",
-                        "Merci pour votre patience",
-                        "2002-01-24T01:57:49.000+0000",
-                        "2020-03-16T10:55:49.000+0000",
-                        3,
-                        "2009-03-06T15:42:31.000+0000",
-                        "1971-09-22T20:16:39.000+0000",
-                        2,
-                        2
-                    ],
-                    [
-                        4,
-                        4,
-                        "Evaluation du Professeur de POO",
-                        "il s'agit d'avoir un retour sur le professeur charge du cours de base de donnéé",
-                        "Veuillez remplir ce formulaire ",
-                        "Merci pour votre patience",
-                        "2009-09-25T05:44:22.000+0000",
-                        "2020-07-06T20:55:13.000+0000",
-                        1,
-                        "1970-12-31T23:00:54.000+0000",
-                        "1970-12-31T23:00:06.000+0000",
-                        3,
-                        3
-                    ]
-                ]
+                    {
+                        "id": 1,
+                        "createDateTime": "2020-07-05T22:16:51.000+0000",
+                        "modDateTime": "1970-12-31T23:01:31.000+0000",
+                        "modBy": 0,
+                        "error": null,
+                        "title": "Evaluation du cours de Base de donnee",
+                        "description": "il s'agit d'avoir un retour sur le bon fonctionnement des cours de Base de donnee",
+                        "beginMessage": "Veuillez remplir ce formulaire ",
+                        "endMessage": "Merci pour votre patience",
+                        "beginDate": "2018-04-05T04:27:23.000+0000",
+                        "endDate": "2020-07-06T20:55:13.000+0000",
+                        "status": 1
+                    },
+                ],
+
+                passed_surveys: [
+                    {
+                        "id": 1,
+                        "createDateTime": "2020-07-05T22:16:51.000+0000",
+                        "modDateTime": "1970-12-31T23:01:31.000+0000",
+                        "modBy": 0,
+                        "error": null,
+                        "title": "Evaluation du cours de Base de donnee",
+                        "description": "il s'agit d'avoir un retour sur le bon fonctionnement des cours de Base de donnee",
+                        "beginMessage": "Veuillez remplir ce formulaire ",
+                        "endMessage": "Merci pour votre patience",
+                        "beginDate": "2018-04-05T04:27:23.000+0000",
+                        "endDate": "2020-07-06T20:55:13.000+0000",
+                        "status": 3
+                    },
+                ],
             };
         },
         mounted() {
@@ -99,16 +92,12 @@
                 params:{},
                 headers: {
                     'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
-                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
-                    // 'Access-Control-Allow-Origin': 'http://localhost:8080/',
-                    'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 }
             }).then(response => {
-                console.log(response.status);
+
                 this.surveys = response.body;
-                console.log(response.body);
+
             }, response => {
                 console.log("error", response);
             })

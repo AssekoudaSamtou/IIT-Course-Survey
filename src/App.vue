@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view name="header" @click="test"/>
+    <router-view name="header"/>
     <router-view style="margin-bottom: 100px;"/>
     <router-view name="footer"/>
   </div>

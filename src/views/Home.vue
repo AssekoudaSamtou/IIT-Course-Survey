@@ -5,26 +5,19 @@
 
     <v-content>
       <section>
-        <v-alert dismissible type="success">
-           <strong>connected successfuly</strong>
-        </v-alert>
+<!--        <v-alert dismissible type="success">-->
+<!--           <strong>connected successfuly</strong>-->
+<!--        </v-alert>-->
         <v-parallax src="../assets/img/landing.jpg" height="600">
           <v-layout column align-center justify-center class="white--text">
             <h1 class="white--text mb-2 display-1 text-xs-center" style="font-weight: 900; text-shadow: 3px 2px #000000">La plate-forme des enquetes à IPNET University</h1>
             <div class="white--text subheading mb-3 text-xs-center" style="font-weight: 900; text-shadow: 2px 2px #000000">Dites-nous ce que vous penser vraiment des cours</div>
-            <v-btn class="blue lighten-2 mt-5" dark large href="/pre-made-themes">
-              commencer
+            <v-btn class="blue lighten-2 mt-5" dark large to="/surveys">
+              parcourir
             </v-btn>
           </v-layout>
         </v-parallax>
       </section>
-
-
-
-
-
-
-
 
 
       <section>
@@ -58,7 +51,7 @@
         <v-container>
           <v-layout>
             <v-flex xs12 class="text-xs-center">
-                <img height="200px" :src="imageLink.logo">
+                <img height="200px" src="../assets/img/wordpress-survey-plugins-featured-image.jpg">
             </v-flex>
           </v-layout>
         </v-container>
@@ -72,11 +65,8 @@
 </template>
 
 <script>
-// import Header from "../components/Header";
-// import Footer from "../components/Footer";
 export default {
   name: "App",
-    // components: {Footer, Header},
     data: function() {
     return {
       title: "Endorfine",
@@ -108,23 +98,17 @@ export default {
     }
   },
 
-  computed: {
-    imgHeight: function() {
-      var offset = 320;
-      console.log("new image height is " + (this.pageHeight - offset));
-      return this.pageHeight - offset;
-    }
-  },
+  computed: {},
 
   mounted: function() {
-    // this.calculateHeight();
+    
   },
   beforeCreate() {
-      if (!this.$cookies.isKey("user")) {
-          this.$router.push({name: "login"});
-      }else {
-          this.$store.commit('setUserInfo', this.$cookies.get("user"));
-      }
+      // if (!this.$cookies.isKey("user")) {
+      //     this.$router.push({name: "login"});
+      // }else {
+      //     this.$store.commit('setUserInfo', this.$cookies.get("user"));
+      // }
   }
 };
 </script>

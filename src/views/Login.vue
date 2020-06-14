@@ -183,16 +183,13 @@ export default {
            if (document.getElementById("signupForm").reportValidity() === true) {
                 var data = {
                     "type" : "user",
-                    "id" : null,
                     "createDateTime" : Math.floor(Date.now() / 1000),
                     "modDateTime" : Math.floor(Date.now() / 1000),
-                    "modBy" : 1,
-                    "error" : null,
                     "firstName" : this.registerForm.firstName,
                     "lastName" : this.registerForm.lastName,
                     "phone" : this.registerForm.phone,
                     "email" : this.registerForm.email,
-                    "role" : ["user"],
+                    "role" : [],
                     "userName":this.registerForm.userName,
                     "password":this.registerForm.password
                 };
@@ -202,26 +199,20 @@ export default {
                         type: "student",
                         matricule: `STU-${response.body.id}`,
                         id_user: response.body.id,
-                        modBy: this.$store.state.userInfo.id,
+                        modBy: response.body.id,
                     };
 
                     this.$http.post('http://ec2-18-224-141-43.us-east-2.compute.amazonaws.com/services/save/student', student).then(response => {
 
                         console.log(response.body);
+                        this.toggleForms("login");
+                        this.loginForm.username = response.body.userName;
 
                     },response => {
                         console.log(response);
                     });
-
-                    console.log(response.body);
-                    this.toggleForms("login");
-                    this.loginForm.username = response.body.userName;
-
-              }, response => {
-                console.log(response);
-                // this.loginIsFailed = true;
-              });
-            }
+                },response => {console.log(response);});
+           }
        }
    },
 };

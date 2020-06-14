@@ -81,11 +81,47 @@
                         "endMessage": "Merci pour votre patience",
                         "beginDate": "2018-04-05T04:27:23.000+0000",
                         "endDate": "2020-07-06T20:55:13.000+0000",
-                        "status": 3
+                        "status": 1
                     },
                 ],
             };
         },
+
+        methods: {
+            getPassedSurveys: function () {
+                this.$http.get(`${this.$store.state.backendHostName}/services/getAll/survey`, {
+                    params:{},
+                    headers: {
+                        'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                }).then(response => {
+                    this.passed_surveys = response.body.filter(survey => {
+
+                        this.$http.get(`${this.$store.state.backendHostName}/services/getPendingSurveyQuestions/${survey.id}/${this.$store.state.userInfo.id}`, {
+                            params:{},
+                            headers: {
+                                'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
+                                'Content-Type': 'application/json',
+                            }
+                        }).then(response => {
+
+                            return response.body.length === 0;
+
+
+                        }, response => {
+                            console.log("error", response);
+                            return false;
+                        });
+
+                    });
+                    console.log(this.passed_surveys);
+                }, response => {
+                    console.log("error", response);
+                });
+            }
+        },
+
         mounted() {
             console.log(this.$store.state.userInfo.tokenType);
             this.$http.get(`${this.$store.state.backendHostName}/services/getPendingSurvey/${this.$store.state.userInfo.id}`, {
@@ -97,11 +133,13 @@
             }).then(response => {
 
                 this.surveys = response.body;
+                this.getPassedSurveys();
 
             }, response => {
                 console.log("error", response);
             })
         },
+
         beforeCreate() {
             if (!this.$cookies.isKey("user")) {
                 this.$router.push({name: "login"});

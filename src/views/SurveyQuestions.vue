@@ -163,6 +163,8 @@
 
                 for (let answer in this.answers) {
 
+                    // indice++;
+
                     if(this.$store.state.surveyAnswerSubmitted === false) {
                         break;
                     }
@@ -189,6 +191,41 @@
 
                         console.log(response);
                         this.$router.go(0);
+
+                        // if (indice === this.answers.length) {
+                        //     this.$http.get(`${this.$store.state.backendHostName}/services/getPendingSurveyQuestions/${this.$route.params.id}/${this.$store.state.userInfo.id}`, {
+                        //         params:{},
+                        //         headers: {
+                        //             'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
+                        //             'Content-Type': 'application/json',
+                        //         }
+                        //     }).then(response => {
+                        //
+                        //         if (response.body.length === 0) {
+                        //             let survey = {
+                        //                 type: "survey",
+                        //                 id: parseInt(this.$route.params.id),
+                        //                 status: 2
+                        //             };
+                        //
+                        //             this.$http.post(`${this.$store.state.backendHostName}/services/save/survey`, survey, {
+                        //                 headers: {
+                        //                     'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
+                        //                     'Content-Type': 'application/json',
+                        //                 }
+                        //             }).then(response => {
+                        //
+                        //                 console.log(response.data);
+                        //
+                        //             }, response => {
+                        //                 console.log("error", response);
+                        //             });
+                        //         }
+                        //
+                        //     }, response => {
+                        //         console.log("error", response);
+                        //     });
+                        // }
 
                     }, response => {
                         console.log("error", response);
@@ -262,12 +299,12 @@
 
             getPendingSurvey: function() {
                 this.$http.get(`${this.$store.state.backendHostName}/services/getPendingSurveyQuestions/${this.$route.params.id}/${this.$store.state.userInfo.id}`, {
-                params:{},
-                headers: {
-                    'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
-                    'Content-Type': 'application/json',
-                }
-            }).then(response => {
+                    params:{},
+                    headers: {
+                        'Authorization': `${this.$store.state.userInfo.tokenType} ${this.$store.state.userInfo.accessToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                }).then(response => {
 
                     this.questions = response.body.filter(this.checkValidQuestons);
                     for (let q=0; q<this.questions.length; q++) {

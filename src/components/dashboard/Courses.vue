@@ -153,7 +153,7 @@
                         this.CourseForm.id_students.push(this.items_student_course[i].id_student);
 
                         // this.old_selected_students = Array.from(Set(this.old_selected_students));
-                        this.CourseForm.id_students = Array.from(Set(this.CourseForm.id_students));
+                        this.CourseForm.id_students = Array.from(new Set(this.CourseForm.id_students));
                     }
                 }
             },
